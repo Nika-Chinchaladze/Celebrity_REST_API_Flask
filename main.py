@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from random import choice
+import os
 
 app = Flask(__name__)
 
@@ -144,7 +145,8 @@ def add_page():
 def update_page(celebrity_id, category):
     api_key = request.args.get("api_key")
     current_actor = Information.query.get(celebrity_id)
-    if api_key == "TommyShelby":
+    my_key = os.environ.get("MY_SECRET_KEY")
+    if api_key == my_key:
         if category == "first_name":
             current_actor.first_name = request.args.get("first_name")
         elif category == "last_name":
@@ -187,7 +189,8 @@ def update_page(celebrity_id, category):
 def change_page(celebrity_id):
     update_record = Information.query.get(celebrity_id)
     api_key = request.args.get("api_key")
-    if api_key == "TommyShelby":
+    my_key = os.environ.get("MY_SECRET_KEY")
+    if api_key == my_key:
         update_record.first_name = request.args.get("first_name")
         update_record.last_name = request.args.get("last_name")
         update_record.gender = request.args.get("gender")
@@ -216,7 +219,8 @@ def change_page(celebrity_id):
 def delete_page(celebrity_id):
     delete_record = Information.query.get(celebrity_id)
     api_key = request.args.get("api_key")
-    if api_key == "TommyShelby":
+    my_key = os.environ.get("MY_SECRET_KEY")
+    if api_key == my_key:
         db.session.delete(delete_record)
         db.session.commit()
         db.session.close()
